@@ -1,6 +1,6 @@
 "use client";
 import "./globals.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { addFav } from "../store/favSlice";
@@ -17,6 +17,31 @@ export default function HomePage() {
   const dispatch = useDispatch();
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            const weatherInfo = {
+              city: data.name,
+              temperature: data.main.temp,
+              description: data.weather[0].description,
+              humidity: data.main.humidity,
+              windSpeed: data.wind.speed,
+            };
+            setWeatherData(weatherInfo);
+          })
+          .catch((error) => {
+            setError(error.message);
+          });
+      });
+    }
+  }, []);
 
   const handleFavorite = async (data) => {
     const { city, temperature, humidity, windSpeed, description } = data;
