@@ -4,7 +4,7 @@ import ProviderWrapper from "./ProviderWrapper";
 import Footer from "@/layouts/Footer";
 
 export const metadata = {
-  title: "My Next.js App",
+  title: "Wheather Dashboard",
   description: "A Next.js app with Redux",
 };
 
