@@ -1,9 +1,19 @@
 "use client";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "@/store/themeSlice";
+import { useEffect } from "react";
+import { Moon, Sun } from "lucide-react";
 
 export default function Header() {
+  const dispatch = useDispatch();
   const favItems = useSelector((state) => state.fav);
+  const theme = useSelector((state) => state.theme.value);
+
+  useEffect(() => {
+    document.documentElement.classList = theme;
+  }, [theme]);
+
   return (
     <header className="flex bg-transparent shadow-sm p-2 justify-end gap-4 font-bold">
       <Link href="/">Home</Link>
@@ -15,6 +25,14 @@ export default function Header() {
           </p>
         ) : null}
       </Link>
+      <button
+        onClick={() => {
+          dispatch(toggleTheme());
+        }}
+        className="font-bold"
+      >
+        {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+      </button>
     </header>
   );
 }
