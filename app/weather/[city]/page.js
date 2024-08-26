@@ -1,7 +1,9 @@
 export default async function CityPage({ params }) {
   const { city } = params;
 
-  const res = await fetch(`http://localhost:3000/api/city/${city}`);
+  const res = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.OPENWEATHERMAP_API_KEY}`
+  );
   const data = await res.json();
 
   return (
