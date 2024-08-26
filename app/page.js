@@ -16,6 +16,7 @@ import Link from "next/link";
 export default function HomePage() {
   const dispatch = useDispatch();
   const [weatherData, setWeatherData] = useState(null);
+  const [isLocation, setIsLocation] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export default function HomePage() {
               humidity: data.main.humidity,
               windSpeed: data.wind.speed,
             };
+            setIsLocation(true);
             setWeatherData(weatherInfo);
           })
           .catch((error) => {
@@ -45,16 +47,17 @@ export default function HomePage() {
 
   const handleFavorite = async (data) => {
     const { city, temperature, humidity, windSpeed, description } = data;
+    const newData = {
+      city: city,
+      temperature: temperature,
+      humidity: humidity,
+      windSpeed: windSpeed,
+      description: description,
+      createdAt: new Date().toLocaleString(),
+    };
     try {
-      const docRef = await addDoc(collection(db, "favorites"), {
-        city: city,
-        temperature: temperature,
-        humidity: humidity,
-        windSpeed: windSpeed,
-        description: description,
-        createdAt: new Date().toISOString(),
-      });
-      dispatch(addFav({ id: docRef.id, ...data }));
+      const docRef = await addDoc(collection(db, "favorites"), newData);
+      dispatch(addFav({ id: docRef.id, ...newData }));
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -94,6 +97,11 @@ export default function HomePage() {
       {error && <p className="text-red-500 mt-4">{error}</p>}
       {weatherData && (
         <div className="flex flex-col gap-2 border p-4 rounded-md hover:bg-gray-50">
+          {isLocation && (
+            <p className="font-bold text-center text-md text-green-500">
+              Your Location
+            </p>
+          )}
           <Link
             href={`/weather/${weatherData.city}`}
             className="flex flex-col gap-2 "
@@ -109,7 +117,7 @@ export default function HomePage() {
             onClick={() => handleFavorite(weatherData)}
             // onClick={() => dispatch(addFav(weatherData))}
           >
-            add Favorites
+            Add to Favorite
           </button>
         </div>
       )}

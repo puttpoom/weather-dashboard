@@ -60,7 +60,7 @@ export default function FavCard() {
               <p>Weather: {item.description}</p>
               <p>Humidity: {item.humidity}%</p>
               <p>Wind Speed: {item.windspeed} m/s</p>
-              {/* <p>Craeted at: {item.createdAt}</p> */}
+              <p>Craeted At: {item.createdAt}</p>
               <p>ID: {item.id}</p>
               <button
                 onClick={() => handleDelete(item.id)}
