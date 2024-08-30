@@ -45,6 +45,32 @@ export default function HomePage() {
     }
   }, []);
 
+  const handleGetCurrentLocation = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            const weatherInfo = {
+              city: data.name,
+              temperature: data.main.temp,
+              description: data.weather[0].description,
+              humidity: data.main.humidity,
+              windSpeed: data.wind.speed,
+            };
+            setIsLocation(true);
+            setWeatherData(weatherInfo);
+          })
+          .catch((error) => {
+            setError(error.message);
+          });
+      });
+    }
+  };
+
   const handleFavorite = async (data) => {
     const { city, temperature, humidity, windSpeed, description } = data;
     const newData = {
@@ -94,6 +120,9 @@ export default function HomePage() {
     <div className="container flex flex-col items-center gap-4 justify-center h-[80vh] mx-auto">
       <h1 className="text-2xl font-bold mb-4">Weather Search</h1>
       <SearchBar onSearch={handleSearch} />
+      {/* <button onClick={() => handleGetCurrentLocation()}>
+        getCurrentPosition
+      </button> */}
       {error && <p className="text-red-500 mt-4">{error}</p>}
       {weatherData && (
         <div className="flex flex-col gap-2 border p-4 rounded-md hover:bg-gray-50">
@@ -115,7 +144,6 @@ export default function HomePage() {
           <button
             className="bg-pink-400 font-bold text-sm p-2 text-white rounded-md"
             onClick={() => handleFavorite(weatherData)}
-            // onClick={() => dispatch(addFav(weatherData))}
           >
             Add to Favorite
           </button>
