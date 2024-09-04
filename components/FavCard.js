@@ -10,32 +10,6 @@ export default function FavCard() {
   const dispatch = useDispatch();
   const favItems = useSelector((state) => state.fav);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, "favorites"));
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        dispatch(
-          addFav({
-            id: doc.id,
-            city: doc.data().city,
-            temperature: doc.data().temperature,
-            humidity: doc.data().humidity,
-            windspeed: doc.data().windSpeed,
-            description: doc.data().description,
-            createdAt: doc.data().createdAt,
-          })
-        );
-      });
-    };
-    console.log("NO fetching data from firestore");
-
-    if (favItems.length === 0) {
-      fetchData();
-      console.log("fetching data from firestore");
-    }
-  }, []);
-
   const handleDelete = async (id) => {
     const itemRef = doc(db, "favorites", id);
     try {
