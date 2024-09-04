@@ -141,7 +141,7 @@ export default function HomePage() {
             <p>Wind Speed: {weatherData.windSpeed} m/s</p>
           </Link>
           <button
-            className="bg-pink-400 font-bold text-sm p-2 text-white rounded-md"
+            className="bg-pink-400 min-w-64 font-bold text-sm p-2 text-white rounded-md"
             onClick={() => handleFavorite(weatherData)}
           >
             Add to Favorite

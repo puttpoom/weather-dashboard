@@ -26,7 +26,7 @@ export default function FavCard() {
           {favItems.map((item) => (
             <div
               key={item.id}
-              className="flex flex-col gap-2 border rounded-md p-4"
+              className="flex flex-col justify-between gap-2 border rounded-md p-4"
             >
               <p className="text-lg font-bold">{item.city}</p>
               <p>Temperature: {item.temperature}°C</p>
@@ -37,7 +37,7 @@ export default function FavCard() {
               <p>ID: {item.id}</p>
               <button
                 onClick={() => handleDelete(item.id)}
-                className="bg-red-400 p-2 rounded-md font-bold text-sm text-white"
+                className="bg-red-400 min-w-64 text-white p-2 rounded-md font-bold text-sm"
               >
                 Delete
               </button>
