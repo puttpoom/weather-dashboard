@@ -1,12 +1,12 @@
 "use client";
 import "./globals.css";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { addFav } from "../store/favSlice";
 
 import db from "../utils/firestore";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 
 //Components
 import SearchBar from "../components/SearchBar";
@@ -14,36 +14,9 @@ import Link from "next/link";
 
 export default function HomePage() {
   const dispatch = useDispatch();
-  const favItems = useSelector((state) => state.fav);
   const [weatherData, setWeatherData] = useState(null);
   const [isLocation, setIsLocation] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, "favorites"));
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        dispatch(
-          addFav({
-            id: doc.id,
-            city: doc.data().city,
-            temperature: doc.data().temperature,
-            humidity: doc.data().humidity,
-            windspeed: doc.data().windSpeed,
-            description: doc.data().description,
-            createdAt: doc.data().createdAt,
-          })
-        );
-      });
-    };
-    console.log("NO fetching data from firestore");
-
-    if (favItems.length === 0) {
-      fetchData();
-      console.log("fetching data from firestore");
-    }
-  }, []);
 
   useEffect(() => {
     if ("geolocation" in navigator) {

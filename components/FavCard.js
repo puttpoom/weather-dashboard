@@ -1,7 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addFav, deleteFav } from "../store/favSlice";
+import { deleteFav } from "../store/favSlice";
 
 import db from "../utils/firestore";
 import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
@@ -21,9 +20,9 @@ export default function FavCard() {
   };
 
   return (
-    <>
+    <div className="container">
       {favItems.length > 0 ? (
-        <div className="flex gap-2 p-4 ">
+        <div className="flex overflow-x-scroll gap-2 p-4 ">
           {favItems.map((item) => (
             <div
               key={item.id}
@@ -46,6 +45,6 @@ export default function FavCard() {
           ))}
         </div>
       ) : null}
-    </>
+    </div>
   );
 }

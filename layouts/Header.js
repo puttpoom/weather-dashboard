@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { fetchFavorite } from "@/store/favSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "@/store/themeSlice";
 import { useEffect } from "react";
@@ -9,6 +10,10 @@ export default function Header() {
   const dispatch = useDispatch();
   const favItems = useSelector((state) => state.fav);
   const theme = useSelector((state) => state.theme.value);
+
+  useEffect(() => {
+    dispatch(fetchFavorite());
+  }, [dispatch]);
 
   useEffect(() => {
     document.documentElement.classList = theme;
