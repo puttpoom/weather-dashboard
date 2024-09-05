@@ -20,9 +20,9 @@ export default function FavCard() {
   };
 
   return (
-    <div className="container">
+    <div className="container overflow-x-scroll">
       {favItems.length > 0 ? (
-        <div className="flex overflow-x-scroll gap-2 p-4 ">
+        <div className="flex gap-2 p-4 ">
           {favItems.map((item) => (
             <div
               key={item.id}
